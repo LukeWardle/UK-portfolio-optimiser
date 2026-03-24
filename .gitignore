@@ -1,0 +1,23 @@
+# .gitignore for uk-portfolio-optimizer
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+# Data — don't commit large price datasets
+data/raw/*.csv
+data/processed/*.csv
+data/processed/*.npy
+# Outputs — generated at runtime
+outputs/*.json
+outputs/plots/*.png
+# Audit log — runtime generated, not source
+documentation/audit_log.txt
+# IDE
+.vscode/
+.idea/
+# OS
+Thumbs.db
+# Sensitive
+*.key
+.env
