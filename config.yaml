@@ -1,0 +1,33 @@
+# Config.yaml - UK Portfolio Optimser Configuration
+# Edit this file to change analysis parameters.
+# Do NOT edit src/ files to change tickers or dates.
+
+# FTSE 100 stocks - London Stock Exchange (.L suffix required)
+# Chosen for sector diversification:
+# BARC.L    Barclays    - Banking (interest rate sensitive)
+# SHEL.L   Shell       - Energy (commodity correlated)
+# AZN.L     AstraZeneca - Healthcare (defensive, low correlation)
+# TSCO.L    Tesco       - Consumer staples (economic cycle)
+# BP.L      BP          - Energy (commodity, diversifies vs Shell)
+
+tickers:
+  - BARC.L
+  - SHEL.L
+  - AZN.L
+  - TSCO.L
+  - BP.L
+
+# Historical data window
+# Industry standard: 1 year for tactical allocation.
+# Too short (<6 months): noisy estimates
+# Too long (>3 years): stale data, regime changes
+start_date: '2023-01-01'
+end_date: '2024-01-01'
+
+# Portfolio parameters
+target_return: 0.12   # 12% annualised target return
+risk_free_rate: 0.045 # UK 10-year gilt rate (~4.5% in 2023-24)
+
+# Regulatory constraints
+allow_short_selling: false    # FCA compliance: retail products no shorting
+max_single_position: 0.40     # Max 40% in one stock (diversification rule)
