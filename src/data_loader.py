@@ -60,10 +60,21 @@ def fetch_price_data(tickers: List[str],
 
   try:
     # yfinance download - 'Adj Close' corrects for splits and dividends
-    data = yf.download(tickers,
+    raw_data = yf.download(tickers,
                        start=start_date,
                        end=end_date,
-                       progress=False) ['Adj Close']
+                       progress=False) 
+    # Use adjusted close if available, otherwise fall back to close
+    if 'Adj Close' in raw_data:
+      data = raw_data['Adj Close']
+    elif 'Close' in raw_data:
+      print("WARNING: 'Adj Close' not found. Falling back to 'Close'.")
+      data = raw_data['Close']
+    else:
+      raise ValueError(
+        f"Downloaded data does not contain 'Adj Close' or 'Close'. "
+        f"Available columns: {raw_data.columns}"
+      )
     
     # yfinance returns a Series (not DataFrame) for a single ticker 
     if isinstance(data, pd.Series):
@@ -85,7 +96,7 @@ def fetch_price_data(tickers: List[str],
     # --- Data repair: forward-fill gaps up to 3 days ---
     # Handles bank holidays and short trading halts.
     # limit=3 is conservative: longer gaps suggest a real problem.
-    data = data.fillna(method='ffill', limit=3)
+    data = data.ffill(limit=3)
 
     # Drop any rows that still contain NaN after forward-fill
     data = data.dropna()
