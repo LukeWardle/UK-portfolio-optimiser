@@ -26,29 +26,46 @@ def plot_allocation(weights: np.ndarray,
     output_path:  Where to save the PNG
   
   """
+  
   fig, ax = plt.subplots(figsize=(10, 6))
 
-  bars = ax.bar(tickers, weights, color='steelblue', alpha=0.75, edgecolor='black', linewidth=0.8)
+  bars = ax.bar(
+    tickers,
+    weights,
+    color='steelblue',
+    alpha=0.75,
+    edgecolor='black',
+    linewidth=0.8
+  )
 
   # Add percentage labels on top of each bar
-  # Portfolio managers need exact numbers, not just visual proportions
   for bar in bars:
     height = bar.get_height()
-    ax.text(bar.get_x() + bar.get_width() / 2.0,
-            height + 0.005,
-            f'{height:.1%}',
-            ha='center', va='bottom', fontsize=11, fontweight='bold')
-    ax.set_ylabel('Portfolio Weight', fontsize=12)
-    ax.set_xlabel('FTSE 100 Stock', fontsize=12)
-    ax.set_title('Optimal Portfolio Allocation (FCA Compliant - No Short Selling)', fontsize=13, fontweight='bold')
-    ax.set_ylim(0, max(weights) * 1.2)  # 20% headroom above tallest bar
-    ax.axhline(y=0, color='black', linewidth=0.5)
-    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    ax.text(
+      bar.get_x() + bar.get_width() / 2.0,
+      height + 0.005,
+      f'{height:.1%}',
+      ha='center',
+      va='bottom',
+      fontsize=11,
+      fontweight='bold'
+    )
 
-    plt.tight_layout()
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
-    plt.close()
-    print(f'Allocation chart saved: {output_path}')
+  ax.set_ylabel('Portfolio Weight', fontsize=12)
+  ax.set_xlabel('FTSE 100 Stock', fontsize=12)
+  ax.set_title(
+    'Optimal Portfolio Allocation (FCA Compliant - No Short Selling)',
+    fontsize=13,
+    fontweight='bold'
+  )
+  ax.set_ylim(0, max(weights) * 1.2)
+  ax.axhline(y=0, color='black', linewidth=0.5)
+  ax.grid(axis='y', alpha=0.3, linestyle='--')
+
+  plt.tight_layout()
+  plt.savefig(output_path, dpi=300, bbox_inches='tight')
+  plt.close()
+  print(f'Allocation chart saved: {output_path}')
 
 def plot_efficient_frontier(expected_returns: np.ndarray,
                             cov_matrix: np.ndarray,
